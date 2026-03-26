@@ -41,18 +41,33 @@ function BookModal({ book, onClose, onAddCart }) {
       }}
       onClick={onClose}
     >
-      <div
-        style={{
-          background: "#fff", borderRadius: 24, maxWidth: 800, width: "100%",
-          overflow: "hidden", boxShadow: "0 25px 50px -12px rgba(0,0,0,0.15)", display: "flex",
-          flexWrap: "wrap",
-          animation: "modal-content-in 0.35s cubic-bezier(0.4, 0, 0.2, 1)",
-        }}
-        onClick={e => e.stopPropagation()}
-      >
-        <div style={{ width: "100%", maxWidth: 320, flexShrink: 0 }}>
-          <img src={book.cover} alt={book.title} style={{ width: "100%", height: "100%", objectFit: "cover", minHeight: 400 }} />
-        </div>
+        <style>{`
+          @media (max-width: 768px) {
+            .book-modal-content {
+              flex-direction: column !important;
+            }
+            .book-modal-image {
+              max-width: 100% !important;
+              height: 300px !important;
+            }
+            .book-modal-info {
+              padding: 24px !important;
+            }
+          }
+        `}</style>
+        <div
+          className="book-modal-content"
+          style={{
+            background: "#fff", borderRadius: 24, maxWidth: 800, width: "100%",
+            maxHeight: "90vh", overflowY: "auto",
+            boxShadow: "0 25px 50px -12px rgba(0,0,0,0.15)", display: "flex",
+            animation: "modal-content-in 0.35s cubic-bezier(0.4, 0, 0.2, 1)",
+          }}
+          onClick={e => e.stopPropagation()}
+        >
+          <div className="book-modal-image" style={{ width: "100%", maxWidth: 320, flexShrink: 0 }}>
+            <img src={book.cover} alt={book.title} style={{ width: "100%", height: "100%", objectFit: "cover", minHeight: 400 }} />
+          </div>
         <div style={{ flex: 1, padding: 32, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
           <div>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
@@ -218,7 +233,7 @@ export default function Catalog({ onBack, onAddToCart }) {
 
   return (
     <div style={{ paddingTop: 30, minHeight: "100vh", background: "#f1f5f9" }}>
-      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "20px 24px 60px" }}>
+      <div className="container" style={{ padding: "20px 0 60px" }}>
         
         {/* HEADER */}
         <FadeIn>

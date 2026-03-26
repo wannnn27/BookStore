@@ -62,7 +62,7 @@ export function Hero({ dark }) {
         background: dark
           ? "linear-gradient(135deg,#0f172a 0%,#1e1b4b 100%)"
           : "linear-gradient(135deg,#f0f4ff 0%,#eef2ff 100%)",
-        padding: "100px 24px 80px",
+        padding: "120px 0 80px",
         position: "relative",
         overflow: "hidden",
       }}
@@ -71,17 +71,17 @@ export function Hero({ dark }) {
       <div style={{ position:"absolute", top:-80, right:-80, width:400, height:400, borderRadius:"50%", background:ACCENT+"15", filter:"blur(80px)", animation:"float 6s ease-in-out infinite" }} />
       <div style={{ position:"absolute", bottom:-60, left:100, width:300, height:300, borderRadius:"50%", background:"#7c3aed10", filter:"blur(60px)", animation:"float 8s ease-in-out infinite reverse" }} />
 
-      <div style={{ maxWidth:1200, width:"100%", display:"flex", alignItems:"center", zIndex:1, gap:60 }}>
+      <div className="container" style={{ display:"flex", alignItems:"center", zIndex:1, gap:60, flexWrap: "wrap", justifyContent: "center" }}>
 
         {/* ── LEFT: Headline ── */}
-        <div style={{ flex:"0 0 40%", maxWidth:480 }}>
+        <div style={{ flex: "1 1 400px", maxWidth: 520, textAlign: window.innerWidth < 768 ? "center" : "left" }}>
           <FadeIn delay={0.1}>
-            <h1 style={{ fontSize:52, fontWeight:800, color:dark?"#f8fafc":"#1a243d", lineHeight:1.12, marginBottom:24, letterSpacing:"-1px", fontFamily:"Georgia, serif" }}>
+            <h1 className="hero-title" style={{ fontSize: window.innerWidth < 768 ? 36 : 52, fontWeight: 800, color: dark ? "#f8fafc" : "#1a243d", lineHeight: 1.12, marginBottom: 24, letterSpacing: "-1px", fontFamily: "Georgia, serif" }}>
               Jelajahi &<br />Pilih Bukumu
             </h1>
           </FadeIn>
           <FadeIn delay={0.25}>
-            <p style={{ color:dark?"#94a3b8":"#64748b", lineHeight:1.75, marginBottom:40, fontSize:16, maxWidth:420 }}>
+            <p style={{ color: dark ? "#94a3b8" : "#64748b", lineHeight: 1.75, marginBottom: 40, fontSize: 16, maxWidth: 420, marginLeft: window.innerWidth < 768 ? "auto" : 0, marginRight: window.innerWidth < 768 ? "auto" : 0 }}>
               Temukan buku terbaik dari penulis favorit Anda, jelajahi ratusan buku
               dengan berbagai kategori, nikmati diskon 50% dan banyak lagi.
             </p>
@@ -100,7 +100,7 @@ export function Hero({ dark }) {
 
         {/* ── RIGHT: Coverflow Carousel ── */}
         <div
-          style={{ flex:"1 1 60%", position:"relative", userSelect:"none", cursor:"grab" }}
+          style={{ flex: "1 1 500px", position: "relative", userSelect: "none", cursor: "grab", maxWidth: "100%", overflow: "hidden" }}
           onTouchStart={onTouchStart}
           onTouchEnd={onTouchEnd}
           onMouseDown={onMouseDown}
@@ -143,7 +143,7 @@ export function Hero({ dark }) {
 
           {/* ── Book stage ── */}
           <div
-            style={{ position:"relative", height:320, display:"flex", alignItems:"center", justifyContent:"center", overflow:"hidden" }}
+            style={{ position:"relative", height: window.innerWidth < 768 ? 240 : 320, display:"flex", alignItems:"center", justifyContent:"center", overflow:"hidden" }}
           >
             {books.map((b, i) => {
               const offset = i - active;          // relative position to center
@@ -170,7 +170,7 @@ export function Hero({ dark }) {
                       : "drop-shadow(0 8px 20px rgba(0,0,0,0.12))",
                   }}
                 >
-                  <BookCover book={b} height={260} />
+                  <BookCover book={b} height={window.innerWidth < 768 ? 200 : 260} />
                 </div>
               );
             })}
@@ -197,8 +197,8 @@ export function Hero({ dark }) {
       </div>
 
       {/* ── Bottom feature bar ── */}
-      <div style={{ position:"absolute", bottom:0, left:0, right:0, display:"flex", justifyContent:"center", borderTop:dark?"1px solid #ffffff10":"1px solid #00000008", backgroundColor:dark?"rgba(15,23,42,0.8)":"rgba(255,255,255,0.7)", backdropFilter:"blur(10px)" }}>
-        <div style={{ maxWidth:1200, width:"100%", padding:"20px 24px", display:"flex", justifyContent:"space-between", gap:20 }}>
+      <div className="hide-mobile" style={{ position:"absolute", bottom:0, left:0, right:0, display:"flex", justifyContent:"center", borderTop:dark?"1px solid #ffffff10":"1px solid #00000008", backgroundColor:dark?"rgba(15,23,42,0.8)":"rgba(255,255,255,0.7)", backdropFilter:"blur(10px)" }}>
+        <div className="container" style={{ padding:"20px 24px", display:"flex", justifyContent:"space-between", gap:20 }}>
           {[
             { icon:<Package size={22} color={ACCENT}/>,     label:"Pengiriman Cepat & Instan" },
             { icon:<ShieldCheck size={22} color={ACCENT}/>,  label:"Pembayaran 100% Aman" },

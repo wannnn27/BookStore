@@ -6,7 +6,7 @@ export default function Footer({ dark }) {
     <footer style={{
       background: dark ? "#0f172a" : "#f8fafc",
       color: "#64748b",
-      padding: "100px 24px 40px",
+      padding: "80px 0 40px",
       borderTop: dark ? "1px solid #ffffff08" : "1px solid #00000008",
       position: "relative",
       overflow: "hidden"
@@ -14,7 +14,7 @@ export default function Footer({ dark }) {
       {/* Background decoration */}
       <div style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, background: `radial-gradient(circle at 20% 80%, ${ACCENT}10 0%, transparent 50%), radial-gradient(circle at 80% 20%, ${ACCENT}05 0%, transparent 50%)` }}></div>
 
-      <div style={{ maxWidth: 1200, margin: "0 auto", position: "relative", zIndex: 1 }}>
+      <div className="container" style={{ position: "relative", zIndex: 1 }}>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: 48, marginBottom: 48 }}>
           {/* Brand */}
           <div>

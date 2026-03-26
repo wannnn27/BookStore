@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
-import { User, ShoppingBag, LayoutDashboard, ChevronDown, LogOut, Settings } from "lucide-react";
+import { User, ShoppingBag, LayoutDashboard, ChevronDown, LogOut, Settings, Menu, X } from "lucide-react";
 import { ACCENT, NAV_LINKS } from "../../constants/data";
 
 export function Navbar({ setCartOpen, cartCount, setLoginOpen, user, onLogout, activeSection, onHomeClick, isCatalog }) {
   const [scrolled, setScrolled] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 20);
@@ -34,6 +35,7 @@ export function Navbar({ setCartOpen, cartCount, setLoginOpen, user, onLogout, a
     const id = linkToId[link] || link.toLowerCase().replace(" ", "-");
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: "smooth" });
+    setMobileMenuOpen(false);
   };
 
   const logoClick = () => {
@@ -53,7 +55,7 @@ export function Navbar({ setCartOpen, cartCount, setLoginOpen, user, onLogout, a
         boxShadow: scrolled ? "0 1px 12px rgba(0,0,0,0.04)" : "none",
       }}
     >
-      <div style={{ maxWidth: 1200, width: "100%", padding: "0 24px", display: "flex", alignItems: "center", height: 72 }}>
+      <div className="container" style={{ display: "flex", alignItems: "center", height: 72 }}>
         {/* Logo */}
         <div onClick={logoClick} style={{ display: "flex", alignItems: "center", gap: 10, marginRight: "auto", cursor: "pointer" }}>
           <div style={{ width: 36, height: 36, background: `linear-gradient(135deg, ${ACCENT}, #d97706)`, borderRadius: 10, display: "flex", alignItems: "center", justifyContent: "center", boxShadow: `0 2px 8px ${ACCENT}30` }}>
@@ -62,8 +64,7 @@ export function Navbar({ setCartOpen, cartCount, setLoginOpen, user, onLogout, a
           <span style={{ fontWeight: 800, color: "#1a1a2e", fontSize: 18, letterSpacing: "-0.5px" }}>One-Book</span>
         </div>
 
-        {/* Links */}
-        <div style={{ display: "flex", gap: 32, marginRight: 48 }}>
+        <div className="hide-mobile" style={{ display: "flex", gap: 32, marginRight: "auto" }}>
           {NAV_LINKS.map((link) => {
             const id = linkToId[link] || link.toLowerCase().replace(" ", "-");
             const isActive = isCatalog ? link === "Beranda" : (activeSection === id);
@@ -221,6 +222,7 @@ export function Navbar({ setCartOpen, cartCount, setLoginOpen, user, onLogout, a
           ) : (
             <button
               onClick={() => setLoginOpen("login")}
+              className="hide-mobile"
               style={{
                 background: `linear-gradient(135deg, ${ACCENT}, #d97706)`,
                 border: "none", cursor: "pointer",
@@ -236,6 +238,78 @@ export function Navbar({ setCartOpen, cartCount, setLoginOpen, user, onLogout, a
             >
               <User size={16} />
               Masuk
+            </button>
+          )}
+
+          {/* Hamburger Menu Toggle */}
+          <button
+            className="show-mobile"
+            onClick={() => setMobileMenuOpen(true)}
+            style={{
+              background: "none", border: "none", cursor: "pointer",
+              color: "#4b5563", padding: 8, borderRadius: 10,
+              display: "flex", alignItems: "center", justifyContent: "center",
+            }}
+          >
+            <Menu size={24} />
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile Sidebar */}
+      <div 
+        className={`mobile-overlay ${mobileMenuOpen ? "open" : ""}`} 
+        onClick={() => setMobileMenuOpen(false)}
+      />
+      <div className={`mobile-menu ${mobileMenuOpen ? "open" : ""}`}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <div style={{ width: 32, height: 32, background: `linear-gradient(135deg, ${ACCENT}, #d97706)`, borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <span style={{ color: "#fff", fontWeight: 900, fontSize: 16 }}>1</span>
+            </div>
+            <span style={{ fontWeight: 800, color: "#1a1a2e", fontSize: 16 }}>One-Book</span>
+          </div>
+          <button
+            onClick={() => setMobileMenuOpen(false)}
+            style={{ background: "none", border: "none", cursor: "pointer", color: "#64748b" }}
+          >
+            <X size={24} />
+          </button>
+        </div>
+
+        <nav style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+          {NAV_LINKS.map((link) => {
+            const id = linkToId[link] || link.toLowerCase().replace(" ", "-");
+            const isActive = isCatalog ? link === "Beranda" : (activeSection === id);
+            return (
+              <button
+                key={link}
+                onClick={() => scrollTo(link)}
+                style={{
+                  textAlign: "left", padding: "14px 16px", borderRadius: 12,
+                  background: isActive ? `${ACCENT}10` : "none", border: "none",
+                  color: isActive ? ACCENT : "#4b5563",
+                  fontWeight: isActive ? 700 : 500, fontSize: 15,
+                  cursor: "pointer", transition: "all 0.2s ease"
+                }}
+              >
+                {link}
+              </button>
+            );
+          })}
+        </nav>
+
+        <div style={{ marginTop: "auto", display: "flex", flexDirection: "column", gap: 12 }}>
+          {!user && (
+            <button
+              onClick={() => { setMobileMenuOpen(false); setLoginOpen("login"); }}
+              style={{
+                background: `linear-gradient(135deg, ${ACCENT}, #d97706)`,
+                border: "none", color: "#fff", padding: "14px", borderRadius: 12,
+                fontWeight: 700, fontSize: 15, cursor: "pointer"
+              }}
+            >
+              Masuk / Daftar
             </button>
           )}
         </div>

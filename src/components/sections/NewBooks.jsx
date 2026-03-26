@@ -53,8 +53,8 @@ function NewBookRow({ book, dark, onAddToCart }) {
 
 export function NewBooks({ dark, onAddToCart }) {
   return (
-    <section id="new-books" style={{ padding: "100px 24px", background: dark ? "#0f172a" : "#f8fafc" }}>
-      <div style={{ maxWidth: 1200, margin: "0 auto", width: "100%" }}>
+    <section id="new-books" style={{ padding: "80px 0", background: dark ? "#0f172a" : "#f8fafc" }}>
+      <div className="container">
         <FadeIn>
           <div style={{ textAlign: "center", marginBottom: 48 }}>
             <h2 style={{ fontSize: 36, fontWeight: 800, color: dark ? "#f8fafc" : "#0f172a", marginBottom: 16 }}>Rilis Terbaru</h2>
@@ -62,7 +62,7 @@ export function NewBooks({ dark, onAddToCart }) {
           </div>
         </FadeIn>
         
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 24 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 24 }}>
           {NEW_BOOKS.map((book, i) => (
             <FadeIn key={book.title + i} delay={i * 0.07}>
               <NewBookRow book={book} dark={dark} onAddToCart={onAddToCart} />

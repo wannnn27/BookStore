@@ -7,20 +7,19 @@ export function DiscountBanner({ dark, onAddToCart }) {
     <section
       id="discount"
       style={{
-        padding: "100px 24px",
+        padding: "80px 0",
         background: dark ? "#1e293b" : "#edf1ff",
-        display: "flex",
-        justifyContent: "center",
         overflow: "hidden",
       }}
     >
-      <div
+      <div 
+        className="container"
         style={{
-          maxWidth: 1200,
-          width: "100%",
           display: "flex",
           alignItems: "center",
-          gap: 80, // 🔥 lebih balance dari 120
+          gap: 60,
+          flexWrap: "wrap",
+          justifyContent: "center",
         }}
       >
         {/* LEFT — BOOK */}
@@ -76,8 +75,8 @@ export function DiscountBanner({ dark, onAddToCart }) {
         <FadeIn direction="right" delay={0.2}>
           <div
             style={{
-              flex: "1 1 50%",
-              paddingLeft: 40, // 🔥 dari 80 → 40 biar balance
+              flex: "1 1 400px",
+              textAlign: typeof window !== "undefined" && window.innerWidth < 768 ? "center" : "left",
             }}
           >
             {/* LABEL */}
@@ -101,7 +100,7 @@ export function DiscountBanner({ dark, onAddToCart }) {
             {/* TITLE */}
             <h2
               style={{
-                fontSize: 60,
+                fontSize: typeof window !== "undefined" && window.innerWidth < 768 ? 42 : 60,
                 fontWeight: 800,
                 color: dark ? "#f8fafc" : "#1a243d",
                 marginBottom: 24,

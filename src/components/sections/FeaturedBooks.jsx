@@ -3,6 +3,17 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { FadeIn } from "../common/FadeIn";
 import { BookCard } from "../common/BookCard";
 import { FEATURED, ACCENT } from "../../constants/data";
+import { useEffect } from "react";
+
+function useWindowWidth() {
+  const [width, setWidth] = useState(typeof window !== "undefined" ? window.innerWidth : 1200);
+  useEffect(() => {
+    const fn = () => setWidth(window.innerWidth);
+    window.addEventListener("resize", fn);
+    return () => window.removeEventListener("resize", fn);
+  }, []);
+  return width;
+}
 
 function arrowStyle(dark, disabled) {
   return {
@@ -26,8 +37,9 @@ function arrowStyle(dark, disabled) {
 
 export function FeaturedBooks({ dark, onSeeMore, onAddToCart }) {
   const [idx, setIdx] = useState(0);
-  const visible = 4;
-  const maxIndex = FEATURED.length - visible;
+  const width = useWindowWidth();
+  const visible = width < 640 ? 1 : width < 1024 ? 2 : 4;
+  const maxIndex = Math.max(0, FEATURED.length - visible);
 
   const next = () => setIdx((p) => Math.min(p + 1, maxIndex));
   const prev = () => setIdx((p) => Math.max(p - 1, 0));
@@ -40,7 +52,7 @@ export function FeaturedBooks({ dark, onSeeMore, onAddToCart }) {
         background: dark ? "#0f172a" : "#f8fafc",
       }}
     >
-      <div style={{ maxWidth: 1200, margin: "0 auto" }}>
+      <div className="container">
         
         {/* HEADER */}
         <FadeIn>
