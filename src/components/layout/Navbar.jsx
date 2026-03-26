@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { User, ShoppingBag, LayoutDashboard, ChevronDown, LogOut, Settings, Menu, X } from "lucide-react";
 import { ACCENT, NAV_LINKS } from "../../constants/data";
 
-export function Navbar({ setCartOpen, cartCount, setLoginOpen, user, onLogout, activeSection, onHomeClick, isCatalog }) {
+export function Navbar({ setCartOpen, cartCount, setLoginOpen, user, onLogout, activeSection, onHomeClick, isCatalog, onCartClick }) {
   const [scrolled, setScrolled] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -92,31 +92,37 @@ export function Navbar({ setCartOpen, cartCount, setLoginOpen, user, onLogout, a
 
         {/* Right Actions */}
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-          {/* Cart */}
+          {/* Cart Button with animated badge */}
           <button
-            onClick={() => setCartOpen(true)}
+            onClick={onCartClick || (() => setCartOpen(true))}
             style={{
               background: "none", border: "none", cursor: "pointer",
               color: "#4b5563",
-              display: "flex", padding: 8, borderRadius: 10,
-              transition: "all 0.2s ease", position: "relative"
+              display: "flex", padding: 8, borderRadius: 12,
+              transition: "all 0.2s ease", position: "relative",
             }}
-            onMouseOver={e => e.currentTarget.style.background = "#f1f5f9"}
-            onMouseOut={e => e.currentTarget.style.background = "transparent"}
+            onMouseOver={(e) => { e.currentTarget.style.background = "#f1f5f9"; e.currentTarget.style.color = ACCENT; }}
+            onMouseOut={(e) => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "#4b5563"; }}
           >
-            <ShoppingBag size={20} />
+            <ShoppingBag size={22} />
             {cartCount > 0 && (
-              <div style={{
-                position: "absolute", top: 2, right: 2,
-                width: 18, height: 18,
-                background: "linear-gradient(135deg, #ef4444, #dc2626)",
-                color: "#fff", borderRadius: "50%",
-                display: "flex", alignItems: "center", justifyContent: "center",
-                fontSize: 10, fontWeight: 700,
-                boxShadow: "0 2px 6px rgba(239, 68, 68, 0.3)",
-                animation: "popIn 0.3s ease",
-              }}>
-                {cartCount}
+              <div
+                key={cartCount}
+                style={{
+                  position: "absolute", top: 0, right: 0,
+                  minWidth: cartCount >= 10 ? 20 : 18,
+                  height: 18,
+                  background: `linear-gradient(135deg, ${ACCENT}, #d97706)`,
+                  color: "#fff", borderRadius: 20,
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  fontSize: 10, fontWeight: 900,
+                  boxShadow: `0 2px 8px ${ACCENT}50`,
+                  padding: "0 4px",
+                  animation: "badgeBounce 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
+                  border: "2px solid #fff",
+                }}
+              >
+                {cartCount > 99 ? "99+" : cartCount}
               </div>
             )}
           </button>
@@ -300,7 +306,65 @@ export function Navbar({ setCartOpen, cartCount, setLoginOpen, user, onLogout, a
         </nav>
 
         <div style={{ marginTop: "auto", display: "flex", flexDirection: "column", gap: 12 }}>
-          {!user && (
+          {/* Cart shortcut */}
+          <button
+            onClick={() => { setMobileMenuOpen(false); (onCartClick || (() => setCartOpen(true)))(); }}
+            style={{
+              display: "flex", alignItems: "center", gap: 12,
+              padding: "14px 16px", borderRadius: 12,
+              background: "#f8fafc", border: "1.5px solid #e2e8f0",
+              color: "#4b5563", fontWeight: 700, fontSize: 15, cursor: "pointer",
+              position: "relative",
+            }}
+          >
+            <ShoppingBag size={20} color={ACCENT} />
+            Keranjang Belanja
+            {cartCount > 0 && (
+              <span style={{
+                marginLeft: "auto",
+                background: `linear-gradient(135deg, ${ACCENT}, #d97706)`,
+                color: "#fff", borderRadius: 20,
+                fontSize: 11, fontWeight: 900,
+                padding: "2px 10px",
+              }}>
+                {cartCount}
+              </span>
+            )}
+          </button>
+
+          {user ? (
+            <>
+              <button
+                onClick={() => { setMobileMenuOpen(false); setLoginOpen("profile"); }}
+                style={{
+                  display: "flex", alignItems: "center", gap: 12,
+                  padding: "14px 16px", borderRadius: 12,
+                  background: "none", border: "none",
+                  color: "#4b5563", fontWeight: 600, fontSize: 14, cursor: "pointer",
+                }}
+              >
+                <div style={{
+                  width: 28, height: 28, borderRadius: "50%",
+                  background: `linear-gradient(135deg, ${ACCENT}, #d97706)`,
+                  color: "#fff", display: "flex", alignItems: "center",
+                  justifyContent: "center", fontWeight: 800, fontSize: 12
+                }}>
+                  {user.name ? user.name[0].toUpperCase() : "U"}
+                </div>
+                {user.name}
+              </button>
+              <button
+                onClick={() => { setMobileMenuOpen(false); onLogout(); }}
+                style={{
+                  padding: "14px 16px", borderRadius: 12,
+                  background: "#fef2f2", border: "1.5px solid #fecaca",
+                  color: "#ef4444", fontWeight: 700, fontSize: 14, cursor: "pointer",
+                }}
+              >
+                Keluar
+              </button>
+            </>
+          ) : (
             <button
               onClick={() => { setMobileMenuOpen(false); setLoginOpen("login"); }}
               style={{

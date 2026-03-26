@@ -18,12 +18,13 @@ import { SuccessPage } from "./components/sections/SuccessPage";
 import { Dashboard } from "./components/sections/Dashboard";
 import { ProfilePage } from "./components/sections/ProfilePage";
 import { ToastProvider, useToast } from "./components/common/Toast";
+import { CartPage } from "./components/sections/CartPage";
 
 function AppContent() {
   const [cartOpen, setCartOpen] = useState(false);
   const [authType, setAuthType] = useState(null); // 'login' | 'register' | null
   const [activeSection, setActiveSection] = useState("home");
-  const [page, setPage] = useState("home"); // 'home' | 'catalog' | 'checkout' | 'success' | 'dashboard' | 'profile'
+  const [page, setPage] = useState("home"); // 'home' | 'catalog' | 'cart' | 'checkout' | 'success' | 'dashboard' | 'profile'
   const [cart, setCart] = useState([]);
   const [user, setUser] = useState(null);
   const [pendingCheckout, setPendingCheckout] = useState(false);
@@ -64,6 +65,11 @@ function AppContent() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  const handleGoCart = () => {
+    setPage("cart");
+    window.scrollTo({ top: 0, behavior: "instant" });
+  };
+
   const onAddToCart = (book) => {
     setCart(prev => {
       const exists = prev.find(item => item.id === book.id);
@@ -72,7 +78,7 @@ function AppContent() {
       }
       return [...prev, { ...book, qty: 1 }];
     });
-    setCartOpen(true);
+    toast.success(`"${book.title}" ditambahkan ke keranjang!`);
   };
 
   const onRemoveFromCart = (id) => {
@@ -182,6 +188,7 @@ function AppContent() {
           activeSection={activeSection} 
           onHomeClick={handleReturnHome}
           isCatalog={page !== "home"}
+          onCartClick={handleGoCart}
         />
       )}
       
@@ -227,6 +234,16 @@ function AppContent() {
 
       {page === "catalog" && (
         <Catalog onBack={handleReturnHome} onAddToCart={onAddToCart} />
+      )}
+
+      {page === "cart" && (
+        <CartPage
+          cart={cart}
+          onRemove={onRemoveFromCart}
+          onUpdateQty={onUpdateQty}
+          onCheckout={onCheckout}
+          onBack={handleReturnHome}
+        />
       )}
 
       {page === "checkout" && (
