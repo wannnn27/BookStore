@@ -31,6 +31,39 @@ body {
   .sidebar-container { display: block; }
 }
 
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─── Typography & Utilities ─── */
+.text-balance {
+  text-wrap: balance;
+}
+
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 32px !important;
+  }
+  .section-padding {
+    padding: 60px 0 !important;
+  }
+  .mobile-stack {
+    flex-direction: column !important;
+  }
+  .mobile-center {
+    text-align: center !important;
+  }
+}
+
 /* ─── Responsive Utilities ─── */
 .container {
   max-width: 1200px;
@@ -58,6 +91,9 @@ body {
 }
 
 @media (max-width: 768px) {
+  .container {
+    padding: 0 20px;
+  }
   .flex-mobile-column {
     flex-direction: column !important;
   }

@@ -1,8 +1,16 @@
+import { useState, useEffect } from "react";
 import { FadeIn } from "../common/FadeIn";
 import { BookCover } from "../common/BookCover";
 import { FEATURED, ACCENT } from "../../constants/data";
 
 export function DiscountBanner({ dark, onAddToCart }) {
+  const [width, setWidth] = useState(typeof window !== "undefined" ? window.innerWidth : 1200);
+  useEffect(() => {
+    const handleResize = () => setWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
     <section
       id="discount"
@@ -13,12 +21,11 @@ export function DiscountBanner({ dark, onAddToCart }) {
       }}
     >
       <div 
-        className="container"
+        className="container mobile-stack"
         style={{
           display: "flex",
           alignItems: "center",
           gap: 60,
-          flexWrap: "wrap",
           justifyContent: "center",
         }}
       >
@@ -30,15 +37,16 @@ export function DiscountBanner({ dark, onAddToCart }) {
               display: "flex",
               justifyContent: "center",
               position: "relative",
+              maxWidth: "100%"
             }}
           >
             {/* CENTERED CONTAINER */}
             <div
               style={{
                 position: "relative",
-                width: 440,
+                width: "min(440px, 90vw)",
                 height: 380,
-                margin: "0 auto", // 🔥 bikin center
+                margin: "0 auto",
               }}
             >
               {/* BACK BOOK */}
@@ -51,7 +59,7 @@ export function DiscountBanner({ dark, onAddToCart }) {
                   filter: "drop-shadow(0 25px 45px rgba(0,0,0,0.15))",
                 }}
               >
-                <BookCover book={FEATURED[1]} height={310} />
+                <BookCover book={FEATURED[1]} height={width < 768 ? 240 : 310} />
               </div>
 
               {/* FRONT BOOK */}
@@ -65,7 +73,7 @@ export function DiscountBanner({ dark, onAddToCart }) {
                   zIndex: 2,
                 }}
               >
-                <BookCover book={FEATURED[3]} height={350} />
+                <BookCover book={FEATURED[3]} height={width < 768 ? 280 : 350} />
               </div>
             </div>
           </div>
@@ -74,9 +82,10 @@ export function DiscountBanner({ dark, onAddToCart }) {
         {/* RIGHT — TEXT */}
         <FadeIn direction="right" delay={0.2}>
           <div
+            className="mobile-center"
             style={{
               flex: "1 1 400px",
-              textAlign: typeof window !== "undefined" && window.innerWidth < 768 ? "center" : "left",
+              marginTop: width < 768 ? 40 : 0
             }}
           >
             {/* LABEL */}
@@ -99,8 +108,9 @@ export function DiscountBanner({ dark, onAddToCart }) {
 
             {/* TITLE */}
             <h2
+              className="hero-title"
               style={{
-                fontSize: typeof window !== "undefined" && window.innerWidth < 768 ? 42 : 60,
+                fontSize: 60,
                 fontWeight: 800,
                 color: dark ? "#f8fafc" : "#1a243d",
                 marginBottom: 24,
@@ -120,6 +130,7 @@ export function DiscountBanner({ dark, onAddToCart }) {
                 marginBottom: 40,
                 maxWidth: 440,
                 fontSize: 18,
+                margin: width < 768 ? "0 auto 40px" : "0 0 40px"
               }}
             >
               Manfaatkan hari-hari diskon yang kami sediakan untuk Anda. Baca

@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import { Package, ShieldCheck, Headphones } from "lucide-react";
 import { FadeIn } from "../common/FadeIn";
 import { BookCover } from "../common/BookCover";
@@ -7,6 +7,15 @@ import { FEATURED, ACCENT, ACCENT_DARK } from "../../constants/data";
 export function Hero({ dark }) {
   const [active, setActive] = useState(0);
   const isAnimating = useRef(false);
+  const [width, setWidth] = useState(typeof window !== "undefined" ? window.innerWidth : 1200);
+
+  useEffect(() => {
+    const handleResize = () => setWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const isMobile = width < 768;
 
   const go = useCallback((dir) => {
     if (isAnimating.current) return;
@@ -44,16 +53,16 @@ export function Hero({ dark }) {
 
   const books = FEATURED;
 
-  // Per-slot config: scale, horizontal offset, opacity, z-index
   const slotCfg = {
     0: { scale: 1,    tx: 0,   opacity: 1,    zIndex: 10 },
-    1: { scale: 0.78, tx: 155, opacity: 0.85, zIndex: 7  },
-    2: { scale: 0.62, tx: 264, opacity: 0.50, zIndex: 4  },
+    1: { scale: 0.78, tx: isMobile ? 120 : 155, opacity: 0.85, zIndex: 7  },
+    2: { scale: 0.62, tx: isMobile ? 200 : 264, opacity: 0.50, zIndex: 4  },
   };
 
   return (
     <section
       id="home"
+      className="section-padding"
       style={{
         minHeight: "100vh",
         display: "flex",
@@ -62,7 +71,6 @@ export function Hero({ dark }) {
         background: dark
           ? "linear-gradient(135deg,#0f172a 0%,#1e1b4b 100%)"
           : "linear-gradient(135deg,#f0f4ff 0%,#eef2ff 100%)",
-        padding: "120px 0 80px",
         position: "relative",
         overflow: "hidden",
       }}
@@ -71,17 +79,17 @@ export function Hero({ dark }) {
       <div style={{ position:"absolute", top:-80, right:-80, width:400, height:400, borderRadius:"50%", background:ACCENT+"15", filter:"blur(80px)", animation:"float 6s ease-in-out infinite" }} />
       <div style={{ position:"absolute", bottom:-60, left:100, width:300, height:300, borderRadius:"50%", background:"#7c3aed10", filter:"blur(60px)", animation:"float 8s ease-in-out infinite reverse" }} />
 
-      <div className="container" style={{ display:"flex", alignItems:"center", zIndex:1, gap:60, flexWrap: "wrap", justifyContent: "center" }}>
+      <div className="container mobile-stack" style={{ display:"flex", alignItems:"center", zIndex:1, gap:60, justifyContent: "center" }}>
 
         {/* ── LEFT: Headline ── */}
-        <div style={{ flex: "1 1 400px", maxWidth: 520, textAlign: window.innerWidth < 768 ? "center" : "left" }}>
+        <div className="mobile-center" style={{ flex: "1 1 400px", maxWidth: 520 }}>
           <FadeIn delay={0.1}>
-            <h1 className="hero-title" style={{ fontSize: window.innerWidth < 768 ? 36 : 52, fontWeight: 800, color: dark ? "#f8fafc" : "#1a243d", lineHeight: 1.12, marginBottom: 24, letterSpacing: "-1px", fontFamily: "Georgia, serif" }}>
+            <h1 className="hero-title" style={{ fontSize: 52, fontWeight: 800, color: dark ? "#f8fafc" : "#1a243d", lineHeight: 1.12, marginBottom: 24, letterSpacing: "-1px", fontFamily: "Georgia, serif" }}>
               Jelajahi &<br />Pilih Bukumu
             </h1>
           </FadeIn>
           <FadeIn delay={0.25}>
-            <p style={{ color: dark ? "#94a3b8" : "#64748b", lineHeight: 1.75, marginBottom: 40, fontSize: 16, maxWidth: 420, marginLeft: window.innerWidth < 768 ? "auto" : 0, marginRight: window.innerWidth < 768 ? "auto" : 0 }}>
+            <p style={{ color: dark ? "#94a3b8" : "#64748b", lineHeight: 1.75, marginBottom: 40, fontSize: 16, maxWidth: 420, margin: "0 auto 40px" }}>
               Temukan buku terbaik dari penulis favorit Anda, jelajahi ratusan buku
               dengan berbagai kategori, nikmati diskon 50% dan banyak lagi.
             </p>
@@ -89,7 +97,7 @@ export function Hero({ dark }) {
           <FadeIn delay={0.4}>
             <button
               onClick={() => document.getElementById("featured").scrollIntoView({ behavior:"smooth" })}
-              style={{ background:ACCENT, color:"#fff", border:"none", padding:"16px 40px", borderRadius:8, fontWeight:600, fontSize:16, cursor:"pointer", boxShadow:`0 8px 20px ${ACCENT}40`, transition:"all 0.3s ease" }}
+              style={{ background:ACCENT, color:"#fff", border:"none", padding:"16px 40px", borderRadius:8, fontWeight:600, fontSize:16, cursor:"pointer", boxShadow:`0 8px 20px ${ACCENT}40`, transition:"all 0.3s ease", marginBottom: isMobile ? 40 : 0 }}
               onMouseEnter={e => { e.currentTarget.style.background=ACCENT_DARK; e.currentTarget.style.transform="translateY(-3px)"; }}
               onMouseLeave={e => { e.currentTarget.style.background=ACCENT; e.currentTarget.style.transform="translateY(0)"; }}
             >
@@ -143,7 +151,7 @@ export function Hero({ dark }) {
 
           {/* ── Book stage ── */}
           <div
-            style={{ position:"relative", height: window.innerWidth < 768 ? 240 : 320, display:"flex", alignItems:"center", justifyContent:"center", overflow:"hidden" }}
+            style={{ position:"relative", height: isMobile ? 240 : 320, display:"flex", alignItems:"center", justifyContent:"center", overflow:"hidden" }}
           >
             {books.map((b, i) => {
               const offset = i - active;          // relative position to center
@@ -170,7 +178,7 @@ export function Hero({ dark }) {
                       : "drop-shadow(0 8px 20px rgba(0,0,0,0.12))",
                   }}
                 >
-                  <BookCover book={b} height={window.innerWidth < 768 ? 200 : 260} />
+                  <BookCover book={b} height={isMobile ? 200 : 260} />
                 </div>
               );
             })}
