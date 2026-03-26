@@ -39,26 +39,28 @@ body {
   padding: 0 24px;
 }
 
-@media (max-width: 768px) {
-  .container {
-    padding: 0 16px;
-  }
-  
-  .hide-mobile {
-    display: none !important;
-  }
-  
-  .show-mobile {
-    display: block !important;
-  }
-
-  .flex-mobile-column {
-    flex-direction: column !important;
-  }
+.hide-mobile {
+  display: flex;
 }
 
 .show-mobile {
   display: none;
+}
+
+@media (max-width: 900px) {
+  .hide-mobile {
+    display: none !important;
+  }
+
+  .show-mobile {
+    display: block !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .flex-mobile-column {
+    flex-direction: column !important;
+  }
 }
 
 /* ─── Keyframe Animations ─── */
@@ -511,58 +513,142 @@ body {
   transition: all 0.4s ease;
 }
 
-/* ─── Responsive ─── */
-@media (max-width: 768px) {
-  .dashboard-welcome {
-    padding: 24px;
+/* ─── Hamburger button ─── */
+.hamburger-btn {
+  display: none;
+}
+
+/* ─── Desktop nav links ─── */
+.nav-desktop-links {
+  display: flex;
+}
+
+/* ════════════════════════════════════════
+   RESPONSIVE — TABLET (≤ 900px)
+════════════════════════════════════════ */
+@media (max-width: 900px) {
+  .nav-desktop-links {
+    display: none !important;
   }
-  
-  .profile-section {
-    padding: 20px;
+
+  .hamburger-btn {
+    display: flex !important;
+  }
+
+  /* checkout grid */
+  .checkout-main {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ════════════════════════════════════════
+   RESPONSIVE — MOBILE (≤ 768px)
+════════════════════════════════════════ */
+@media (max-width: 768px) {
+
+  /* ─── Container ─── */
+  .container {
+    padding: 0 16px;
+  }
+
+  /* ─── Toast ─── */
+  .toast-container {
+    top: 16px;
+    right: 12px;
+    left: 12px;
   }
 
   .toast {
     min-width: unset;
-    max-width: calc(100vw - 32px);
-    right: 16px;
-    left: 16px;
+    max-width: 100%;
   }
 
-  /* ─── Mobile Navbar ─── */
-  .mobile-menu {
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    width: 280px;
-    background: #fff;
-    z-index: 1000;
-    box-shadow: -10px 0 30px rgba(0,0,0,0.1);
-    padding: 24px;
-    display: flex;
+  /* ─── Dashboard ─── */
+  .dashboard-welcome {
+    padding: 20px;
+  }
+
+  .dashboard-page {
+    padding: 88px 16px 60px;
+  }
+
+  /* ─── Profile ─── */
+  .profile-page {
+    padding: 88px 16px 60px;
+  }
+
+  .profile-section {
+    padding: 20px;
+  }
+
+  /* ─── Sections general ─── */
+  section {
+    padding-top: 60px;
+    padding-bottom: 60px;
+  }
+
+  /* ─── Hero ─── */
+  .hero-title {
+    font-size: 34px !important;
+    text-align: center;
+  }
+
+  /* ─── Cart page ─── */
+  .cart-layout {
+    grid-template-columns: 1fr !important;
+  }
+
+  .cart-summary-sticky {
+    position: static !important;
+  }
+
+  /* ─── Book modal ─── */
+  .book-modal-content {
+    flex-direction: column !important;
+    max-height: 95vh;
+    overflow-y: auto;
+  }
+
+  .book-modal-image {
+    max-width: 100% !important;
+    height: 260px !important;
+  }
+
+  .book-modal-image img {
+    height: 260px !important;
+    min-height: unset !important;
+  }
+
+  .book-modal-info {
+    padding: 20px !important;
+  }
+
+  /* ─── Stat cards grid ─── */
+  .stat-card {
+    padding: 20px 16px;
+  }
+}
+
+/* ════════════════════════════════════════
+   RESPONSIVE — SMALL MOBILE (≤ 480px)
+════════════════════════════════════════ */
+@media (max-width: 480px) {
+  .container {
+    padding: 0 14px;
+  }
+
+  .hero-title {
+    font-size: 28px !important;
+  }
+
+  .btn-primary {
+    padding: 12px 20px;
+    font-size: 14px;
+  }
+
+  /* ─── Cart items ─── */
+  .cart-layout .cart-item-flex {
     flex-direction: column;
-    gap: 24px;
-    transform: translateX(100%);
-    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .mobile-menu.open {
-    transform: translateX(0);
-  }
-
-  .mobile-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.4);
-    backdrop-filter: blur(4px);
-    z-index: 999;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
-  }
-
-  .mobile-overlay.open {
-    opacity: 1;
-    pointer-events: all;
+    align-items: flex-start;
   }
 }
