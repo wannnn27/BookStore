@@ -55,17 +55,17 @@ export function Hero({ dark }) {
 
   const slotCfg = {
     0: { scale: 1,    tx: 0,   opacity: 1,    zIndex: 10 },
-    1: { scale: 0.78, tx: isMobile ? 120 : 155, opacity: 0.85, zIndex: 7  },
-    2: { scale: 0.62, tx: isMobile ? 200 : 264, opacity: 0.50, zIndex: 4  },
+    1: { scale: 0.78, tx: isMobile ? 110 : 155, opacity: 0.85, zIndex: 7  },
+    2: { scale: 0.62, tx: isMobile ? 180 : 264, opacity: 0.50, zIndex: 4  },
   };
 
   return (
     <section
       id="home"
-      className="section-padding"
       style={{
-        minHeight: "100vh",
+        minHeight: isMobile ? "auto" : "100vh",
         display: "flex",
+        flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
         background: dark
@@ -73,112 +73,99 @@ export function Hero({ dark }) {
           : "linear-gradient(135deg,#f0f4ff 0%,#eef2ff 100%)",
         position: "relative",
         overflow: "hidden",
+        padding: isMobile ? "110px 16px 60px" : "80px 0",
       }}
     >
       {/* Ambient blobs */}
       <div style={{ position:"absolute", top:-80, right:-80, width:400, height:400, borderRadius:"50%", background:ACCENT+"15", filter:"blur(80px)", animation:"float 6s ease-in-out infinite" }} />
       <div style={{ position:"absolute", bottom:-60, left:100, width:300, height:300, borderRadius:"50%", background:"#7c3aed10", filter:"blur(60px)", animation:"float 8s ease-in-out infinite reverse" }} />
 
-      <div className="container mobile-stack" style={{ display:"flex", alignItems:"center", zIndex:1, gap:60, justifyContent: "center" }}>
+      <div className="container" style={{ 
+        display:"flex", 
+        flexDirection: isMobile ? "column" : "row",
+        alignItems:"center", 
+        zIndex:1, 
+        gap: isMobile ? 32 : 60, 
+        justifyContent: "center",
+        width: "100%"
+      }}>
 
         {/* ── LEFT: Headline ── */}
-        <div className="mobile-center" style={{ flex: "1 1 400px", maxWidth: 520 }}>
+        <div style={{ 
+          flex: isMobile ? "none" : "1 1 400px", 
+          maxWidth: 520,
+          textAlign: isMobile ? "center" : "left",
+          width: "100%"
+        }}>
           <FadeIn delay={0.1}>
-            <h1 className="hero-title" style={{ fontSize: 52, fontWeight: 800, color: dark ? "#f8fafc" : "#1a243d", lineHeight: 1.12, marginBottom: 24, letterSpacing: "-1px", fontFamily: "Georgia, serif" }}>
+            <h1 className="hero-title" style={{ fontSize: isMobile ? 34 : 52, fontWeight: 800, color: dark ? "#f8fafc" : "#1a243d", lineHeight: 1.12, marginBottom: 20, letterSpacing: "-1px", fontFamily: "Georgia, serif" }}>
               Jelajahi &<br />Pilih Bukumu
             </h1>
           </FadeIn>
-          <FadeIn delay={0.25}>
-            <p style={{ color: dark ? "#94a3b8" : "#64748b", lineHeight: 1.75, marginBottom: 40, fontSize: 16, maxWidth: 420, margin: "0 auto 40px" }}>
+          <FadeIn delay={0.2}>
+            <p style={{ color: dark ? "#94a3b8" : "#64748b", lineHeight: 1.6, marginBottom: 30, fontSize: 16, maxWidth: 420, margin: isMobile ? "0 auto 30px" : "0 0 32px" }}>
               Temukan buku terbaik dari penulis favorit Anda, jelajahi ratusan buku
-              dengan berbagai kategori, nikmati diskon 50% dan banyak lagi.
+              dengan berbagai kategori, nikmati diskon 50%.
             </p>
           </FadeIn>
-          <FadeIn delay={0.4}>
+          <FadeIn delay={0.3}>
             <button
-              onClick={() => document.getElementById("featured").scrollIntoView({ behavior:"smooth" })}
-              style={{ background:ACCENT, color:"#fff", border:"none", padding:"16px 40px", borderRadius:8, fontWeight:600, fontSize:16, cursor:"pointer", boxShadow:`0 8px 20px ${ACCENT}40`, transition:"all 0.3s ease", marginBottom: isMobile ? 40 : 0 }}
-              onMouseEnter={e => { e.currentTarget.style.background=ACCENT_DARK; e.currentTarget.style.transform="translateY(-3px)"; }}
-              onMouseLeave={e => { e.currentTarget.style.background=ACCENT; e.currentTarget.style.transform="translateY(0)"; }}
+              onClick={() => {
+                const el = document.getElementById("featured");
+                if (el) el.scrollIntoView({ behavior: "smooth" });
+              }}
+              style={{ background:ACCENT, color:"#fff", border:"none", padding: "14px 40px", borderRadius:12, fontWeight:700, fontSize:15, cursor:"pointer", boxShadow:`0 8px 16px ${ACCENT}40`, transition:"all 0.3s ease" }}
+              onMouseEnter={e => e.currentTarget.style.background=ACCENT_DARK}
+              onMouseLeave={e => e.currentTarget.style.background=ACCENT}
             >
               Jelajahi Sekarang
             </button>
           </FadeIn>
         </div>
 
-        {/* ── RIGHT: Coverflow Carousel ── */}
+        {/* ── RIGHT: Carousel ── */}
         <div
-          style={{ flex: "1 1 500px", position: "relative", userSelect: "none", cursor: "grab", maxWidth: "100%", overflow: "hidden" }}
+          style={{ 
+            flex: isMobile ? "none" : "1 1 500px", 
+            position: "relative", 
+            userSelect: "none", 
+            cursor: "grab", 
+            width: "100%",
+            maxWidth: isMobile ? 360 : 600,
+            overflow: "hidden",
+            marginTop: isMobile ? 30 : 0
+          }}
           onTouchStart={onTouchStart}
           onTouchEnd={onTouchEnd}
           onMouseDown={onMouseDown}
           onMouseUp={onMouseUp}
         >
-          {/* Left edge fade */}
-          <div style={{ position:"absolute", left:0, top:0, bottom:0, width:80, zIndex:3, pointerEvents:"none",
-            background: dark ? "linear-gradient(to right,#0f172a,transparent)" : "linear-gradient(to right,#f0f4ff,transparent)" }} />
-          {/* Right edge fade */}
-          <div style={{ position:"absolute", right:0, top:0, bottom:0, width:80, zIndex:3, pointerEvents:"none",
-            background: dark ? "linear-gradient(to left,#1e1b4b,transparent)" : "linear-gradient(to left,#eef2ff,transparent)" }} />
-
-          {/* Prev arrow */}
-          {active > 0 && (
-            <button
-              onClick={() => go(-1)}
-              style={{ position:"absolute", left:10, top:"45%", transform:"translateY(-50%)", zIndex:5, width:36, height:36, borderRadius:"50%", border:"none", background:dark?"rgba(255,255,255,0.14)":"rgba(255,255,255,0.9)", boxShadow:"0 2px 14px rgba(0,0,0,0.14)", cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", backdropFilter:"blur(6px)", transition:"all 0.2s" }}
-              onMouseEnter={e => { e.currentTarget.style.background = dark ? "rgba(255,255,255,0.24)" : "#fff"; }}
-              onMouseLeave={e => { e.currentTarget.style.background = dark ? "rgba(255,255,255,0.14)" : "rgba(255,255,255,0.9)"; }}
-            >
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke={dark?"#e2e8f0":"#334155"} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="15 18 9 12 15 6"/>
-              </svg>
-            </button>
-          )}
-
-          {/* Next arrow */}
-          {active < books.length - 1 && (
-            <button
-              onClick={() => go(1)}
-              style={{ position:"absolute", right:10, top:"45%", transform:"translateY(-50%)", zIndex:5, width:36, height:36, borderRadius:"50%", border:"none", background:dark?"rgba(255,255,255,0.14)":"rgba(255,255,255,0.9)", boxShadow:"0 2px 14px rgba(0,0,0,0.14)", cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", backdropFilter:"blur(6px)", transition:"all 0.2s" }}
-              onMouseEnter={e => { e.currentTarget.style.background = dark ? "rgba(255,255,255,0.24)" : "#fff"; }}
-              onMouseLeave={e => { e.currentTarget.style.background = dark ? "rgba(255,255,255,0.14)" : "rgba(255,255,255,0.9)"; }}
-            >
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke={dark?"#e2e8f0":"#334155"} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="9 18 15 12 9 6"/>
-              </svg>
-            </button>
-          )}
+          {/* Edge fades */}
+          {!isMobile && <div style={{ position:"absolute", left:0, top:0, bottom:0, width:60, zIndex:3, pointerEvents:"none", background: dark ? "linear-gradient(to right,#0f172a,transparent)" : "linear-gradient(to right,#f0f4ff,transparent)" }} />}
+          {!isMobile && <div style={{ position:"absolute", right:0, top:0, bottom:0, width:60, zIndex:3, pointerEvents:"none", background: dark ? "linear-gradient(to left,#1e1b4b,transparent)" : "linear-gradient(to left,#eef2ff,transparent)" }} />}
 
           {/* ── Book stage ── */}
-          <div
-            style={{ position:"relative", height: isMobile ? 240 : 320, display:"flex", alignItems:"center", justifyContent:"center", overflow:"hidden" }}
-          >
+          <div style={{ position:"relative", height: isMobile ? 240 : 320, display:"flex", alignItems:"center", justifyContent:"center" }}>
             {books.map((b, i) => {
-              const offset = i - active;          // relative position to center
-              const abs    = Math.abs(offset);
-
-              if (abs > 2) return null;            // only render ±2
-
+              const offset = i - active;
+              const abs = Math.abs(offset);
+              if (abs > 2) return null;
               const cfg = slotCfg[abs];
-              const tx  = offset < 0 ? -cfg.tx : cfg.tx;
-
+              const tx = offset < 0 ? -cfg.tx : cfg.tx;
               return (
                 <div
                   key={b.id ?? i}
                   onClick={() => { if (offset !== 0) go(offset > 0 ? 1 : -1); }}
                   style={{
-                    position:   "absolute",
-                    transform:  `translateX(${tx}px) scale(${cfg.scale})`,
-                    opacity:    cfg.opacity,
-                    zIndex:     cfg.zIndex,
-                    transition: "transform 0.42s cubic-bezier(0.4,0,0.2,1), opacity 0.42s ease",
-                    cursor:     offset !== 0 ? "pointer" : "default",
-                    filter:     abs === 0
-                      ? "drop-shadow(0 24px 48px rgba(0,0,0,0.28))"
-                      : "drop-shadow(0 8px 20px rgba(0,0,0,0.12))",
+                    position: "absolute",
+                    transform: `translateX(${tx}px) scale(${cfg.scale})`,
+                    opacity: cfg.opacity,
+                    zIndex: cfg.zIndex,
+                    transition: "all 0.4s cubic-bezier(0.4,0,0.2,1)",
+                    cursor: offset !== 0 ? "pointer" : "default",
                   }}
                 >
-                  <BookCover book={b} height={isMobile ? 200 : 260} />
+                  <BookCover book={b} height={isMobile ? 180 : 260} />
                 </div>
               );
             })}
@@ -191,12 +178,9 @@ export function Hero({ dark }) {
                 key={i}
                 onClick={() => setActive(i)}
                 style={{
-                  width:      i === active ? 22 : 7,
-                  height:     7,
-                  borderRadius: 4,
+                  width: i === active ? 20 : 7, height: 7, borderRadius: 4,
                   background: i === active ? ACCENT : (dark ? "#334155" : "#cbd5e1"),
-                  cursor:     "pointer",
-                  transition: "all 0.3s ease",
+                  cursor: "pointer", transition: "all 0.3s ease",
                 }}
               />
             ))}
@@ -204,21 +188,12 @@ export function Hero({ dark }) {
         </div>
       </div>
 
-      {/* ── Bottom feature bar ── */}
-      <div className="hide-mobile" style={{ position:"absolute", bottom:0, left:0, right:0, display:"flex", justifyContent:"center", borderTop:dark?"1px solid #ffffff10":"1px solid #00000008", backgroundColor:dark?"rgba(15,23,42,0.8)":"rgba(255,255,255,0.7)", backdropFilter:"blur(10px)" }}>
-        <div className="container" style={{ padding:"20px 24px", display:"flex", justifyContent:"space-between", gap:20 }}>
-          {[
-            { icon:<Package size={22} color={ACCENT}/>,     label:"Pengiriman Cepat & Instan" },
-            { icon:<ShieldCheck size={22} color={ACCENT}/>,  label:"Pembayaran 100% Aman" },
-            { icon:<Headphones size={22} color={ACCENT}/>,   label:"Layanan Pelanggan 24/7" },
-          ].map((item, i) => (
-            <div key={i} style={{ display:"flex", alignItems:"center", gap:12, color:dark?"#cbd5e1":"#475569", fontSize:15, fontWeight:600 }}>
-              <div style={{ padding:10, background:dark?"#1e293b":"#f1f5f9", borderRadius:10, display:"flex" }}>
-                {item.icon}
-              </div>
-              {item.label}
-            </div>
-          ))}
+      {/* ── Mobile features bar (optional) ── */}
+      <div className="hide-mobile" style={{ position:"absolute", bottom:0, left:0, right:0, height: 60, display: "flex", alignItems: "center", borderTop:dark?"1px solid white":"1px solid rgba(0,0,0,0.05)", background:dark?"rgba(0,0,0,0.2)":"rgba(255,255,255,0.4)", backdropFilter:"blur(10px)" }}>
+        <div className="container" style={{ display: "flex", justifyContent: "space-between" }}>
+          <span style={{ fontSize: 13, fontWeight: 700, color: "#64748b" }}>Pengiriman Cepat</span>
+          <span style={{ fontSize: 13, fontWeight: 700, color: "#64748b" }}>Pembayaran Aman</span>
+          <span style={{ fontSize: 13, fontWeight: 700, color: "#64748b" }}>Layanan 24/7</span>
         </div>
       </div>
     </section>
