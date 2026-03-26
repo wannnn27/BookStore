@@ -23,7 +23,7 @@ export function SuccessPage({ onHome, dark }) {
         }}>
           <Check size={40} color="#10b981" />
         </div>
-        <h2 style={{ fontSize: 28, fontWeight: 800, color: dark ? "#fff" : "#111827", marginBottom: 12 }}>Pesanan Berhasil! 🎉</h2>
+        <h3 style={{ fontSize: 28, fontWeight: 800, color: dark ? "#fff" : "#111827", marginBottom: 12 }}>Pesanan Berhasil!</h3>
         <p style={{ color: "#64748b", fontSize: 16, lineHeight: 1.6, marginBottom: 24 }}>
           Terima kasih telah berbelanja di One-Book. Pesananmu sedang diproses dan akan segera dikirimkan ke alamatmu.
         </p>

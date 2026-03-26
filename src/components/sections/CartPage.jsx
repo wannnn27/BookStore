@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Minus, Plus, Trash2, ArrowRight, ShoppingBag, Tag, Gift, ChevronLeft, Sparkles } from "lucide-react";
+import { Minus, Plus, Trash2, ArrowRight, ShoppingBag, Tag, Gift, ChevronLeft } from "lucide-react";
 import { ACCENT } from "../../constants/data";
 import { FadeIn } from "../common/FadeIn";
 
@@ -184,10 +184,10 @@ function EmptyCart({ onContinue }) {
         onMouseOver={(e) => { e.currentTarget.style.transform = "translateY(-3px)"; e.currentTarget.style.boxShadow = `0 12px 32px ${ACCENT}45`; }}
         onMouseOut={(e) => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = `0 8px 24px ${ACCENT}35`; }}
       >
-        <Sparkles size={18} />
+        <ShoppingBag size={18} />
         Jelajahi Koleksi Buku
       </button>
-    </div>
+</div>
   );
 }
 
@@ -294,8 +294,8 @@ export function CartPage({ cart, onRemove, onUpdateQty, onCheckout, onBack }) {
                 <h2 style={{ fontSize: 16, fontWeight: 800, color: "#1e293b" }}>
                   Produk ({totalItems})
                 </h2>
-                <span style={{ fontSize: 13, color: "#94a3b8", fontWeight: 600 }}>
-                  Hemat {formatPrice(savings)} 🎉
+                <span style={{ fontSize: 13, color: "#10b981", fontWeight: 700 }}>
+                  Hemat {formatPrice(savings)}
                 </span>
               </div>
 
